@@ -1,0 +1,931 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Projects | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #2d3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--dark);
+      background-color: #f9f9f9;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 0;
+      background-color: rgba(45, 62, 80, 0.95);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav li {
+      margin-left: 30px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      position: relative;
+      padding-bottom: 5px;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--secondary);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--secondary);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+    }
+
+    /* Page Banner */
+    .page-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      padding: 150px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-banner::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: url('/api/placeholder/1200/400') center/cover no-repeat;
+      opacity: 0.1;
+    }
+
+    .page-banner-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-banner h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+
+    .breadcrumb li {
+      margin: 0 10px;
+      position: relative;
+    }
+
+    .breadcrumb li:not(:last-child)::after {
+      content: '/';
+      position: absolute;
+      right: -15px;
+      color: var(--secondary);
+    }
+
+    .breadcrumb a {
+      color: var(--light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--secondary);
+    }
+
+    .breadcrumb .active {
+      color: var(--secondary);
+    }
+
+    /* Projects Section */
+    .projects-section {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+      font-size: 36px;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background-color: var(--secondary);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Filter Buttons */
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 2px solid #e0e0e0;
+      padding: 10px 25px;
+      margin: 0 10px 10px;
+      border-radius: 30px;
+      color: var(--dark);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover, 
+    .filter-btn.active {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .project-card {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .project-image {
+      position: relative;
+      overflow: hidden;
+      height: 250px;
+    }
+
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-image img {
+      transform: scale(1.1);
+    }
+
+    .project-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(45, 62, 80, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay {
+      opacity: 1;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .project-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: white;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    .project-card:hover .project-link {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .project-link:hover {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .project-link:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .project-link:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .project-content {
+      padding: 25px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .project-tag {
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 15px;
+      background-color: #f0f0f0;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover .project-tag {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .project-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .project-description {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .project-meta span {
+      display: flex;
+      align-items: center;
+    }
+
+    .project-meta i {
+      margin-right: 5px;
+      color: var(--secondary);
+    }
+
+    /* Call to Action */
+    .cta-section {
+      background-color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-content h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .cta-content p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--secondary);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid var(--secondary);
+    }
+
+    .btn:hover {
+      background-color: transparent;
+      color: var(--secondary);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: var(--primary);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+    }
+
+    .mobile-menu li {
+      margin: 20px 0;
+    }
+
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .close-menu {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--primary);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .footer-logo span {
+      color: var(--secondary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--secondary);
+    }
+
+    .copyright {
+      width: 100%;
+      margin-top: 20px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+        color: white;
+        font-size: 24px;
+      }
+
+      .page-banner h1 {
+        font-size: 36px;
+      }
+
+      .projects-section {
+        padding: 70px 0;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .filter-btn {
+        width: 200px;
+        margin-bottom: 10px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header id="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">Port<span>folio</span></a>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#skills">Skills</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="menuBtn">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="close-menu" id="closeMenu">
+      <i class="fas fa-times"></i>
+    </div>
+    <ul>
+      <li><a href="index.html" class="mobile-link">Home</a></li>
+      <li><a href="index.html#about" class="mobile-link">About</a></li>
+      <li><a href="index.html#skills" class="mobile-link">Skills</a></li>
+      <li><a href="#" class="mobile-link">Projects</a></li>
+      <li><a href="index.html#contact" class="mobile-link">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- Page Banner -->
+  <section class="page-banner">
+    <div class="container page-banner-content">
+      <h1>My Projects</h1>
+      <ul class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">Projects</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Portfolio Projects</h2>
+        <p>Showcasing my recent work and accomplishments</p>
+      </div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="web">Web Development</button>
+        <button class="filter-btn" data-filter="app">App Development</button>
+        <button class="filter-btn" data-filter="design">UI/UX Design</button>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: To-Do List App -->
+        <div class="project-card" data-category="web">
+          <div class="project-image">
+            <img src="/api/placeholder/600/400" alt="To-Do List App">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="#" class="project-link">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+            </div>
+            <h3 class="project-title">To-Do List Application</h3>
+            <p class="project-description">A clean and intuitive to-do list application with features to add, edit, delete, and mark tasks as complete. Built with vanilla JavaScript with local storage functionality.</p>
+            <div class="project-meta">
+              <span><i class="far fa-calendar"></i> May 2025</span>
+              <span><i class="fas fa-code-branch"></i> Frontend</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Weather App -->
+        <div class="project-card" data-category="web app">
+          <div class="project-image">
+            <img src="/api/placeholder/600/400" alt="Weather App">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="#" class="project-link">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">API</span>
+            </div>
+            <h3 class="project-title">Weather Forecast Application</h3>
+            <p class="project-description">A responsive weather application that provides real-time weather data and forecasts for any location. Integrates with a weather API to display accurate and up-to-date information.</p>
+            <div class="project-meta">
+              <span><i class="far fa-calendar"></i> April 2025</span>
+              <span><i class="fas fa-code-branch"></i> Frontend</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: E-commerce UI -->
+        <div class="project-card" data-category="design">
+          <div class="project-image">
+            <img src="/api/placeholder/600/400" alt="E-commerce UI">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="#" class="project-link">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">UI/UX</span>
+              <span class="project-tag">Figma</span>
+              <span class="project-tag">HTML/CSS</span>
+            </div>
+            <h3 class="project-title">E-commerce User Interface</h3>
+            <p class="project-description">A modern and intuitive UI design for an e-commerce platform, focusing on user experience and conversion optimization. Includes responsive design for all device sizes.</p>
+            <div class="project-meta">
+              <span><i class="far fa-calendar"></i> March 2025</span>
+              <span><i class="fas fa-paint-brush"></i> Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Fitness App -->
+        <div class="project-card" data-category="app">
+          <div class="project-image">
+            <img src="/api/placeholder/600/400" alt="Fitness App">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="#" class="project-link">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">React</span>
+              <span class="project-tag">Firebase</span>
+            </div>
+            <h3 class="project-title">Fitness Tracking Application</h3>
+            <p class="project-description">A comprehensive fitness tracking application that allows users to log workouts, track progress, and set goals. Features include custom workout plans and progress visualization.</p>
+            <div class="project-meta">
+              <span><i class="far fa-calendar"></i> February 2025</span>
+              <span><i class="fas fa-mobile-alt"></i> Mobile App</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Portfolio Website -->
+        <div class="project-card" data-category="web design">
+          <div class="project-image">
+            <img src="/api/placeholder/600/400" alt="Portfolio Website">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="#" class="project-link">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+            </div>
+            <h3 class="project-title">Personal Portfolio Website</h3>
+            <p class="project-description">A clean and modern portfolio website to showcase my skills and projects. Features a responsive design, smooth animations, and an intuitive user interface.</p>
+            <div class="project-meta">
+              <span><i class="far fa-calendar"></i> January 2025</span>
+              <span><i class="fas fa-laptop-code"></i> Web Development</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: Blog Platform -->
+        <div class="project-card" data-category="web">
+          <div class="project-image">
+            <img src="/api/placeholder/600/400" alt="Blog Platform">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="#" class="project-link">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">Express</span>
+              <span class="project-tag">MongoDB</span>
+            </div>
+            <h3 class="project-title">Dynamic Blog Platform</h3>
+            <p class="project-description">A full-stack blog platform with user authentication, content management, and commenting system. Built with Node.js, Express, and MongoDB for data storage.</p>
+            <div class="project-meta">
+              <span><i class="far fa-calendar"></i> December 2024</span>
+              <span><i class="fas fa-server"></i> Full Stack</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Interested in working together?</h2>
+        <p>I'm always open to discussing product design work or partnership opportunities.</p>
+        <a href="index.html#contact" class="btn">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          Port<span>folio</span>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#about">About</a>
+          <a href="index.html#skills">Skills</a>
+          <a href="projects.html">Projects</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2025 Portfolio. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    menuBtn.addEventListener('click', function() {
+      mobileMenu.classList.add('active');
+    });
+
+    closeMenu.addEventListener('click', function() {
+      mobileMenu.classList.remove('active');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Project Filtering
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active class from all buttons
+        filterBtns.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        const filter = this.getAttribute('data-filter');
+        
+        projectCards.forEach(card => {
+          const categories = card.getAttribute('data-category').split(' ');
+          
+          if (filter === 'all' || categories.includes(filter)) {
+            card.style.display = 'block';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1)';
+            }, 100);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 300);
+          }
+        });
+      });
+    });
+
+    // Animation on scroll
+    function revealOnScroll() {
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach((card, index) => {
+        const cardTop = card.getBoundingClientRect().top;
+        const triggerBottom = window.innerHeight * 0.8;
+        
+        if (cardTop < triggerBottom) {
+          card.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.1}s`;
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+  </script>
+</body>
+</html>
